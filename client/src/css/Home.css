@@ -1,0 +1,67 @@
+
+.top-bar {
+    font-family: 'MyFont', sans-serif;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    justify-content: center;
+}
+.user-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-style:solid;
+    border-color: #000000;
+    border-radius: 55%;
+    border-spacing: 20px;
+    padding: 10px;
+   margin-left:20%;
+   margin-top: 10px;
+}
+
+.user-profile p {
+    margin-left: 10px;
+}
+button{
+    margin: 2px;
+    /* padding: 2px 2px;  */
+    font-size: 16px; 
+    font-family: 'MyFont';
+}
+
+.profile-buttons {
+    display: flex;
+    align-items: center;
+}
+.links {
+    display: flex;
+   justify-content: center;
+   margin-left: 20%;
+   margin-top: 20px;
+}
+
+.links a  {
+    margin: 5px;
+    font-size: 30px;
+    color: #000000;
+    border-bottom-color: black;
+}
+.links a:hover {
+    color: rgb(54, 124, 255);
+  }
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+}
+
+
+

@@ -1,0 +1,133 @@
+.mine {
+    background-color: #e0ffe0; 
+    align-self: flex-start; 
+  }
+  
+  .other {
+    align-self: flex-end; 
+    background-color: #f0f0f0; }
+
+    .mine, .other{
+        border-radius: 10px;
+        margin-bottom: 10px;
+        display: block; 
+        max-width: 80%; 
+        word-wrap: break-word;
+    }
+body {
+    background-image: url('chat-background.jpg');
+}
+
+.messages {
+    display: flex;
+    flex-direction: column;
+  }
+
+
+
+  .chat-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 7px;
+    position: fixed;
+    bottom: 1%; 
+    width: 97%;
+    background-color: #fff; 
+  }
+  
+  ul.messages {
+    padding-bottom: 60px; 
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .send-button {
+    background-color: #049e3f;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+  
+  .send-button:hover {
+    background-color: #055e13;
+  }
+
+
+  textarea {
+    flex: 1;
+    resize: none;
+    border: none;
+    outline: none;
+  }
+
+.load-more-button {
+  margin-left: 45%;
+  width: 10%;
+  padding: 10px 20px; /* רווח פנימי */
+  border: none; /* אין מסגרת */
+  border-radius: 4px; /* פינות עגולות */
+  font-size: 16px; /* גודל גופן */
+  cursor: pointer; /* מחוון של עכבר */
+  background-color: #28a745; /* צבע רקע ירוק */
+  color: #fff; /* צבע טקסט */
+  transition: background-color 0.3s ease; /* מעבר חלק לצבע רקע */
+  margin-top: 10px; /* רווח עליון */
+}
+
+.load-more-button:hover {
+  background-color: #218838; /* צבע רקע ירוק כהה יותר במעבר עכבר */
+}
+
+.load-more-button:disabled {
+  background-color: #ccc; /* צבע רקע כשהכפתור מבוטל */
+  cursor: not-allowed; /* מחוון של עכבר */
+}
+.add-contact-menu {
+  padding: 10px 15px; /* רווח פנימי */
+  border: 1px solid #ccc; /* מסגרת דקה */
+  border-radius: 50%; /* צורה עגולה */
+  font-size: 20px; /* גודל גופן */
+  font-weight: bold; /* משקל גופן */
+  cursor: pointer; /* מחוון של עכבר */
+  background-color: rgba(248, 249, 250, 0.5); /* צבע רקע חצי שקוף */
+  color: #333; /* צבע טקסט */
+  transition: background-color 0.3s ease, color 0.3s ease; /* מעבר חלק לצבע רקע וצבע טקסט */
+  text-align: center; /* טקסט במרכז */
+  line-height: 20px; /* גובה שורה */
+  display: inline-block; /* מציג ככפתור אינליין */
+  margin: 5px; /* מרווח חיצוני */
+}
+
+.add-contact-menu:hover {
+  background-color: rgba(226, 230, 234, 0.5); /* צבע רקע חצי שקוף במעבר עכבר */
+  color: #000; /* צבע טקסט כהה יותר במעבר עכבר */
+}
+
+.show-members-button {
+  padding: 8px 12px; /* רווח פנימי */
+  border: 1px solid #ccc; /* מסגרת דקה */
+  border-radius: 50%; /* צורה עגולה */
+  font-size: 20px; /* גודל גופן */
+  cursor: pointer; /* מחוון של עכבר */
+  background-color: rgba(248, 249, 250, 0.5); /* צבע רקע חצי שקוף */
+  color: #333; /* צבע טקסט */
+  transition: background-color 0.3s ease, color 0.3s ease; /* מעבר חלק לצבע רקע וצבע טקסט */
+  display: inline-block; /* מציג ככפתור אינליין */
+  text-align: center; /* טקסט במרכז */
+  line-height: 20px; /* גובה שורה */
+  margin: 5px; /* מרווח חיצוני */
+}
+
+.show-members-button:hover {
+  background-color: rgba(226, 230, 234, 0.5); /* צבע רקע חצי שקוף במעבר עכבר */
+  color: #000; /* צבע טקסט כהה יותר במעבר עכבר */
+}
+
+  

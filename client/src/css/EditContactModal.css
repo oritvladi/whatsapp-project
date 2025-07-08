@@ -1,0 +1,67 @@
+/* סגנון כללי עבור כל העמוד */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* רקע חצי שקוף */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* כדי לוודא שהמודל מופיע מעל הכל */
+  }
+  
+  .modal-content {
+    background-color: #fff; /* רקע לבן */
+    padding: 20px; /* רווח פנימי */
+    border-radius: 8px; /* פינות עגולות */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* צללים */
+    width: 300px; /* רוחב קבוע */
+    max-width: 90%; /* עד למקסימום של 90% רוחב המסך */
+  }
+  
+  .modal-content h2 {
+    margin-top: 0; /* אין רווח עליון */
+    font-size: 24px; /* גודל גופן */
+    color: #333; /* צבע טקסט */
+  }
+  
+  .modal-content label {
+    display: block; /* תצוגה כבלוק */
+    margin-bottom: 10px; /* רווח תחתון */
+    font-size: 18px; /* גודל גופן */
+    color: #555; /* צבע טקסט */
+  }
+  
+  .modal-content input[type="text"] {
+    width: 100%; /* רוחב מלא */
+    padding: 10px; /* רווח פנימי */
+    margin-bottom: 20px; /* רווח תחתון */
+    border: 1px solid #ccc; /* מסגרת */
+    border-radius: 4px; /* פינות עגולות */
+    font-size: 16px; /* גודל גופן */
+    box-sizing: border-box; /* כדי לוודא שהמסגרת נחשבת בחישוב הרוחב הכולל */
+  }
+  
+  .modal-content button {
+    padding: 10px 20px; /* רווח פנימי */
+    margin-right: 10px; /* רווח ימני */
+    border: none; /* אין מסגרת */
+    border-radius: 4px; /* פינות עגולות */
+    font-size: 16px; /* גודל גופן */
+    cursor: pointer; /* מחוון של עכבר */
+    background-color: #3dac9f; /* צבע רקע */
+    color: #fff; /* צבע טקסט */
+    transition: background-color 0.3s ease; /* מעבר חלק לצבע רקע */
+  }
+  
+  .modal-content button:hover {
+    background-color: #128C7E; /* צבע רקע במעבר עכבר */
+  }
+  
+  .modal-content button:disabled {
+    background-color: #ccc; /* צבע רקע כשהכפתור מבוטל */
+    cursor: not-allowed; /* מחוון של עכבר */
+  }
+  

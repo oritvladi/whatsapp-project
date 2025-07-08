@@ -1,0 +1,71 @@
+/* 
+.home-header {
+  padding: 20px;
+}
+
+.home-buttons {
+  margin-bottom: 20px;
+}
+@font-face {
+  font-family: 'MyFont';
+  src: url('GrotleyRegular-mLEWv.otf') format('opentype');
+
+}
+body {
+  font-family: 'MyFont', sans-serif; 
+  font-size:20px;
+  background-image: url('image2.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #000000; 
+  margin-left: 50px;
+}
+button{
+  background-color: rgb(241, 252, 255);
+  border-radius: 10%;
+}
+button:hover{
+  background-color: #004ec4;
+}
+input{
+  background-color: transparent;
+}
+
+
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.home-header {
+  background-color: #81d4fa;  
+  padding: 20px;
+}
+strong{
+  text-decoration: underline;
+}
+.button:hover{
+  background-color: #007ac0;
+}
+h2{
+  font-weight: bold;
+}
+
+
+a:hover {
+  color: #747bff;
+}
+#loginDiv,#registerDiv{
+ margin-top: 15%;
+justify-content: center;
+text-align: center;
+}
+#infoDiv,#registerDetailsDiv{
+  justify-content: center;
+  text-align: center;
+}
+
+ */

@@ -1,0 +1,93 @@
+.profile-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10%;
+}
+
+.profile-container h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.profile-container h2 {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.profile-container div {
+    margin-bottom: 20px;
+}
+
+.profile-container label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.profile-container input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: calc(100% - 22px);
+    box-sizing: border-box;
+}
+
+.profile-container input:focus {
+    border-color: #128C7E;
+    box-shadow: 0 0 5px #128C7E(0, 123, 255, 0.5);
+}
+
+.profile-container .profile-info {
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile-container .profile-info input {
+    width: calc(100% - 60px);
+}
+
+.profile-container .profile-info label {
+    width: 50px;
+}
+
+.profile-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #3dac9f;
+    color: white;
+    cursor: pointer;
+}
+
+.profile-container button:hover {
+    background-color: #128C7E;
+}
+
+.profile-info{
+    margin-left: 10%;
+}
+
+.details-pic{
+    margin-left: 35%;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover; /* שמירה על היחס בין רוחב לגובה התמונה */
+
+}
+
+.btn_save{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-left: 40%;
+}

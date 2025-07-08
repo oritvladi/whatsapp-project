@@ -1,0 +1,19 @@
+.add-contact-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 64px; 
+  }
+  
+  .add-contact-title {
+    margin-top: 24px; 
+  }
+  
+  .add-contact-form {
+    margin-top: 16px; 
+  }
+  
+  .add-contact-button {
+    margin-top: 24px; 
+    margin-bottom: 16px; 
+  }
