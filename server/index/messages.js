@@ -8,9 +8,9 @@ route.get('/', async (req, res) => {
     try {
         const userId = req.query.userId;
         const callId = req.query.callId;
-        const lastDate = req.query.lastDate;
+        const lastId = req.query.lastId;
         const managerId = await getManagerByCall(callId);
-        const messages = await getAllMessages(callId, userId, lastDate);
+        const messages = await getAllMessages(callId, userId, lastId);
         if (!messages)
             return res.sendStatus(404);
         res.send({ messages, managerId });
@@ -22,17 +22,17 @@ route.get('/', async (req, res) => {
 //postMessage
 route.post('/', async (req, res) => {
     try {
-        let { callId, userId, type, text, time, replyOn } = req.body; 
+        let { callId, userId, type, text, time, replyOn } = req.body;
         try {
             type = await getType(type);
         } catch (err) {
             res.status(400).json({ message: err.message });
-        }    
+        }
 
         const messageData = { callId, userId, type, text, time };
         if (replyOn) {
             messageData.replyOn = replyOn;
-        }    
+        }
         const newP = await postMessage(messageData);
         res.status(201).send(newP);
     } catch (err) {
@@ -68,7 +68,5 @@ route.delete('/:messageId', async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 });
-
-
 
 export default route;

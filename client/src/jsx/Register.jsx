@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate} from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../css/Register.css';
 import { url } from '../config';
+import '../css/Register.css';
 
 const Register = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -10,48 +10,38 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [file, setFile] = useState(null);
-  const [userId, setUserId] = useState(null);
 
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     navigate("/login");
-};
+  };
 
-const goToCalls = (id) => {
-  navigate("/calls", { state: { userId: id  } });
-};
+  const goToCalls = (id) => {
+    navigate("/calls", { state: { userId: id } });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!phoneNumber || !userName || !email) {
       setMessage('First insert all fields');
       return;
     }
-
-    const data = new FormData();
-    data.append('img', file);
-    data.append('name', userName);
-    data.append('email', email);
-    data.append('phone', phoneNumber);
-
-    axios.post(`${url}/users`, {
-      name: userName,
-      email: email,
-      phone: phoneNumber
-    }).then(response => {
-      const userId = response.data.userId;
-      setUserId(response.data.userId);
-      const formData = new FormData();
+    const formData = new FormData();
+    formData.append('name', userName);
+    formData.append('phone', phoneNumber);
+    formData.append('email', email);
+    if (file)
       formData.append('img', file);
-      return axios.post(`${url}/users/${userId}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
-    }).then((response) => {
-      setMessage("User register succusfully");
-      goToCalls(userId);
-    }).catch(error => {
-      setMessage('Error in sign!');
-    });
+
+    axios.post(`${url}/users`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+      .then((res) => {
+        const userId = res.data.userId;
+        goToCalls(userId);
+      })
+      .catch(() => setMessage("Error registering user"));
   }
 
   return (

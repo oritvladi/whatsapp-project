@@ -61,44 +61,58 @@ WHERE (id = ? AND (userId1 = ? OR userId2 = ?)) OR EXISTS (
 }
 export async function getAllCalls(userId, lastCall = null) {
     const query = `
+SELECT 
+    calls.id,
+    calls.type,
+    calls.userId1,
+    calls.userId2,
+    calls.alias,
+    CASE 
+        WHEN last_message.active = 0 THEN 'Message canceled'
+        ELSE COALESCE(
+            CASE 
+                WHEN mt.name = 'text' THEN last_message.text
+                ELSE CONCAT('[', mt.name, ' file]')
+            END,
+            ''
+        )
+    END AS last_message,
+    COALESCE(last_message.time, calls.createdAt) AS last_time
+FROM 
+    calls
+LEFT JOIN 
+    members ON calls.id = members.callId
+LEFT JOIN 
+    (
         SELECT 
-            calls.id,
-            calls.type,
-            calls.userId1,
-            calls.userId2,
-            calls.alias,
-            COALESCE(last_message.text, '') AS last_message,
-            COALESCE(last_message.time, calls.createdAt) AS last_time
+            m1.callId,
+            m1.text,
+            m1.time,
+            m1.type,
+            m1.active
         FROM 
-            calls
-        LEFT JOIN 
-            members ON calls.id = members.callId
-        LEFT JOIN 
+            messages m1
+        INNER JOIN 
             (
                 SELECT 
-                    m1.callId,
-                    m1.text,
-                    m1.time
+                    callId, 
+                    MAX(time) AS max_time
                 FROM 
-                    messages m1
-                INNER JOIN 
-                    (
-                        SELECT 
-                            callId, 
-                            MAX(time) AS max_time
-                        FROM 
-                            messages
-                        GROUP BY 
-                            callId
-                    ) AS m2 ON m1.callId = m2.callId AND m1.time = m2.max_time
-            ) AS last_message ON calls.id = last_message.callId
-        WHERE 
-            (members.userId = ? OR calls.userId1 = ? OR calls.userId2 = ?)
-            AND calls.active = ?
-        GROUP BY 
-            calls.id, calls.type, calls.userId1, calls.userId2, calls.alias, last_message.text, last_time
-        ORDER BY 
-            last_time DESC
+                    messages
+                GROUP BY 
+                    callId
+            ) AS m2 ON m1.callId = m2.callId AND m1.time = m2.max_time
+    ) AS last_message ON calls.id = last_message.callId
+LEFT JOIN 
+    messagetypes mt ON last_message.type = mt.id
+WHERE 
+    (members.userId = ? OR calls.userId1 = ? OR calls.userId2 = ?)
+    AND calls.active = ?
+GROUP BY 
+    calls.id, calls.type, calls.userId1, calls.userId2, calls.alias, last_message.text, last_message.time, mt.name, last_message.active
+ORDER BY 
+    last_time DESC;
+
     `;
 
     const params = [userId, userId, userId, true];
@@ -186,7 +200,7 @@ LEFT JOIN
 WHERE 
     calls.id = ?   `, [callId]);
 
-    if (call && call.type&& call.type==1&& call.alias=='')
+    if (call && call.type && call.type == 1 && call.alias == '')
         call.alias = await getName(userId, call.userId1 + call.userId2 - userId);
     return call;
 }

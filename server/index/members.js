@@ -1,4 +1,4 @@
-import { getAllMembersById, postMember, deletemember} from '../database/membersDB.js'
+import { getAllMembersById, postMember, deletemember } from '../database/membersDB.js'
 import express from "express";
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -8,16 +8,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 //getAllMembersById
-route.get('/:callId',async (req, res) => {
+route.get('/:callId', async (req, res) => {
     try {
-        const members = await getAllMembersById(req.params.callId);
+        const userId = req.get('userId');
+        const members = await getAllMembersById(userId, req.params.callId);
         if (!members) {
             return res.sendStatus(404);
         }
         for (let i = 0; i < members.length; i++) {
 
             //לוהסיף בדיקה אם אין לו תמונה
-          members[i].picture = `uploads/profiles/${members[i].userId}.jpg`;
+            members[i].picture = `uploads/profiles/${members[i].userId}.jpg`;
         }
         (members);
         res.send(members);
@@ -29,7 +30,7 @@ route.get('/:callId',async (req, res) => {
 //postCall
 route.post('/', async (req, res) => {
     try {
-        const { type, userId1, userId2, alias } = req.body;        
+        const { type, userId1, userId2, alias } = req.body;
         const newP = await postMember({ type, userId1, userId2, alias });
         res.status(201).send(newP);
     } catch (err) {

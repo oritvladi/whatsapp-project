@@ -1,13 +1,14 @@
 import { getManagerByCall } from './callsDB.js';
 import pool from './database.js'
 import { getName } from './namesDB.js';
+
 //get all members of specific group
-export async function getAllMembersById(callId) {
+export async function getAllMembersById(userId, callId) {
     const manager = await getManagerByCall(callId);
     const [members] = await pool.query(`SELECT userId from members where callId=?`, [callId]);
     for (let i = 0; i < members.length; i++) {
         {
-            const name = await getName(manager, members[i].userId);
+            const name = await getName(userId, members[i].userId);
             members[i].name = name;
         }
     }

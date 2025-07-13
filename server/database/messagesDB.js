@@ -2,8 +2,26 @@ import pool from './database.js'
 
 //get specific message
 export async function getMessage(id) {
-    const [[Message]] = await pool.query(`SELECT * FROM messages where id=?`, [id]);
-    return Message;
+    const [[message]] = await pool.query(`
+    SELECT 
+      m.*,
+      CASE 
+        WHEN m.replyOn IS NOT NULL THEN 
+          (
+            SELECT JSON_OBJECT(
+              'id', r.id,
+              'text', IF(r.active = 1, r.text, 'Message canceled')
+            )
+            FROM messages r
+            WHERE r.id = m.replyOn
+          )
+        ELSE NULL
+      END AS replyOn
+    FROM messages m
+    WHERE m.id = ?
+  `, [id]);
+
+    return message;
 }
 
 //create new Message
@@ -14,7 +32,7 @@ export async function postMessage(newMessage) {
         newMessage.time = localDate;
     }
 
-    const replyOn = newMessage.replyOn || null; 
+    const replyOn = newMessage.replyOn?.id || newMessage.replyOn || null;
     const result = await pool.query(`insert into messages(userId, callId, type, text, time, replyOn) VALUES(?,?,?,?,?,?)`,
         [newMessage.userId, newMessage.callId, newMessage.type, newMessage.text, newMessage.time, replyOn])
 
@@ -43,28 +61,39 @@ export async function updateTextMessage(id, type, text) {
 }
 
 // get all messages of call
-export async function getAllMessages(callId, userId, date = null) {
+export async function getAllMessages(callId, userId, lastId = null) {
     const [messages] = await pool.query(`
-        SELECT 
-            messages.*, 
-            IFNULL(names.name, users.name) AS writen
-        FROM 
-            messages
-        LEFT JOIN 
-            names ON messages.userId = names.userId2 AND names.userId1 = ?
-        LEFT JOIN 
-            users ON messages.userId = users.id
-        WHERE 
-            messages.callId = ?
-            AND (? IS NULL OR messages.time < ?)
-        ORDER BY 
-            messages.time DESC 
-        LIMIT 10
-    `, [userId, callId, date, date]);
+    SELECT 
+        m.*, 
+        IFNULL(n.name, u.name) AS writen,
+        CASE 
+            WHEN r.id IS NOT NULL THEN 
+                JSON_OBJECT(
+                    'id', r.id,
+                    'text', IF(r.active = 1, r.text, 'Message canceled')
+                )
+            ELSE 
+                NULL
+        END AS replyOn
+    FROM 
+        messages m
+    LEFT JOIN 
+        names n ON m.userId = n.userId2 AND n.userId1 = ?
+    LEFT JOIN 
+        users u ON m.userId = u.id
+    LEFT JOIN 
+        messages r ON m.replyOn = r.id
+    WHERE 
+        m.callId = ?
+        AND (? IS NULL OR m.id < ?)
+    ORDER BY 
+        m.id DESC 
+    LIMIT 10
+  `, [userId, callId, lastId, lastId]);
 
-    //לא בטוח שנצטרך
     return messages.reverse();
 }
+
 
 //get the type code of a message by name
 export async function getType(name) {

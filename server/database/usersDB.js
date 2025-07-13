@@ -65,9 +65,9 @@ export async function updateUser(updUser) {
 export async function getUserPicture(userId) {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    const profilePicturePath = path.join(__dirname, '..', 'uploads', 'profiles', `${userId}.jpg`); // נתיב מוחלט לתמונה
-    const profilePic = `/uploads/profiles/${userId}.jpg`; // נתיב יחסי לתמונה לשימוש ב-URL
-    const defaultPic = '/uploads/profiles/default.jpg'; // נתיב יחסי לתמונה חלופית
+    const profilePicturePath = path.join(__dirname, '..', 'uploads', 'profiles', `${userId}.jpg`); 
+    const profilePic = `/uploads/profiles/${userId}.jpg`; 
+    const defaultPic = '/uploads/profiles/default.jpg'; 
 
     try {
         await fs.access(profilePicturePath);

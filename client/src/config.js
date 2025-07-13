@@ -1,2 +1,4 @@
-export const url="http://localhost:8080";
-export const imgUrl=`${url}/img`
+export const PORT = 8081;
+export const HOST = "http://localhost";
+export const url = `${HOST}:${PORT}`;
+export const imgUrl = `${url}/img`

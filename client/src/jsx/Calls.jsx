@@ -57,16 +57,17 @@ const Calls = () => {
     socket.current.on("groupDeleted", (groupId) => {
       setCalls((prevCalls) => prevCalls.filter(call => call.id != groupId));
     });
-    
+
     socket.current.on("newCallAdded", (call) => {
       if (userId == call.userId2) {
         axios.get(`${url}/calls/${userId}/${call.Id}`)
-        .then(response => {setCalls(prevCalls => [response.data, ...prevCalls])
-          console.log(response.data);
-        }).catch(error=>{alert(error.message?? "Fail to load new call")})
+          .then(response => {
+            setCalls(prevCalls => [response.data, ...prevCalls])
+            console.log(response.data);
+          }).catch(error => { alert(error.message ?? "Fail to load new call") })
       }
     });
-    
+
     socket.current.emit("loadMoreCalls", { userId: userId });
     return () => socket.current.disconnect();
   }, [location.state, navigate, userId]);
@@ -96,8 +97,19 @@ const Calls = () => {
   const renderProfileOrInitial = (call) => {
     if (call.profilePicture) {
       return (
-        <img src={`${url}/${call.profilePicture}`} className="profile-pic" alt={`${call.alias}'s profile`} />
-      );
+        <img
+          src={`${url}/${call.profilePicture}`}
+          className="profile-pic"
+          alt={`${call.alias}'s profile`}
+          onError={e => {
+            e.target.onerror = null;
+            if (call.type == 1) {
+              e.target.src = `${url}/uploads/profiles/default.jpg`;
+            } else {
+              e.target.src = `${url}/uploads/group-profiles/default.png`;
+            }
+          }}
+        />);
     } else {
       return (
         <div className="profile-pic-default" style={{ backgroundColor: getRandomColor() }}>
@@ -143,6 +155,25 @@ const Calls = () => {
     setShowEditModal(true);
   };
 
+  function formatLastMessage(text) {
+    if (!text) return '';
+    const match = text.match(/^\[(.+) file\]$/);
+    if (match) {
+      const type = match[1];
+      const icons = {
+        video: '🎥',
+        image: '📷',
+        audio: '🎵',
+        document: '📄',
+        text: '',
+      };
+      const icon = icons[type] || '📝';
+      return `${icon} ${type.charAt(0).toUpperCase() + type.slice(1)} file`;
+    }
+    return text;
+
+  };
+  console.log(calls);
   return (
     <div className="calls-container">
       <div className="calls-header">
@@ -196,8 +227,14 @@ const Calls = () => {
               {renderProfileOrInitial(call)}
               <div className="call-info">
                 <h3 className="call-user">{call.alias}</h3>
-                <p className="call-alias">{call.last_message}</p>
-                {(call.type === 1 || call.type == 2 && userId == 1) && (
+                <p
+                  className="call-alias"
+                  style={call.last_message === "Message canceled" ? { color: 'gray', fontStyle: 'italic' } : {}}
+                >
+                  {formatLastMessage(call.last_message)}
+                </p>
+
+                {(call.type === 1 || call.type == 2 && call.userId1 == userId) && (
                   <button
                     className="optionsToAllCalls"
                     onClick={(e) => {
@@ -208,12 +245,12 @@ const Calls = () => {
 
                     ⋮
                   </button>
-                )}    
-               </div>
+                )}
+              </div>
             </li>
           ))
         ) : (
-          !isFirstC&&<p> loading calls...</p>
+          !isFirstC && <p> loading calls...</p>
         )}
       </ul>
       {isFirstC ? (
@@ -222,14 +259,14 @@ const Calls = () => {
         <button onClick={loadMoreCalls} className="load-more-button">Load more</button>
       )}
       <Outlet />
-      <AddGroup show={showAddGroupModal} 
-      onClose={(newC = null) => {
-        setShowAddGroupModal(false); 
-        newC && newC.userId1==userId &&setCalls(prevCalls => [newC, ...prevCalls])
-      }} userId={userId} />
+      <AddGroup show={showAddGroupModal}
+        onClose={(newC = null) => {
+          setShowAddGroupModal(false);
+          newC && newC.userId1 == userId && setCalls(prevCalls => [newC, ...prevCalls])
+        }} userId={userId} />
       <AddContact show={showAddContact} onClose={(newC = null) => {
-        setShowAddContact(false); 
-        newC &&(newC.userId1==userId || newC.userId2==userId )&& setCalls(prevCalls => [newC, ...prevCalls])
+        setShowAddContact(false);
+        newC && (newC.userId1 == userId || newC.userId2 == userId) && setCalls(prevCalls => [newC, ...prevCalls])
       }} userId={userId} />
       {showProfileSidebar && (
         <div className="profile-sidebar">
@@ -248,7 +285,7 @@ const Calls = () => {
           inDelete={(deletedId) => {
             setCalls((prevCalls) => prevCalls.filter(call => call.id !== deletedId));
           }}
-                  />
+        />
       )}
     </div>
   );

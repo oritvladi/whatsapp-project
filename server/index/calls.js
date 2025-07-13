@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 
 // הגדרת התיקיות הסטטיות
 route.use('/profiles', express.static(path.join(__dirname, '../database/profiles')));
-route.use('/Gprofiles', express.static(path.join(__dirname, '../database/Gprofiles')));
+route.use('/group-profiles', express.static(path.join(__dirname, '../database/group-profiles')));
 
 
 
@@ -37,12 +37,12 @@ route.put('/:id', async (req, res) => {
 
 route.get('/:id/:callId', async (req, res) => {
     try {
-               
-       const call= getAllDetailsOfCall(req.params.callId, req.params.id);
+
+        const call = getAllDetailsOfCall(req.params.callId, req.params.id);
         if (calls.length === 0) {
             return res.sendStatus(404);
         }
-        call.profilePicture = `/uploads/profiles/${call.userId1+call.userId2-req.params.callId}`;
+        call.profilePicture = `/uploads/profiles/${call.userId1 + call.userId2 - req.params.callId}`;
         res.send(calls);
     } catch (error) {
         res.status(500).json({ message: error.message });
